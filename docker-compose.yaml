@@ -23,8 +23,6 @@ services:
     entrypoint: wait-for db:3306 -t 50 -- npm run start
     networks:
       - fullcycle-docker 
-    ports:
-      - "3000:3000"
     depends_on:
       - db
 
