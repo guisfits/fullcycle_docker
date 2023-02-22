@@ -13,7 +13,7 @@ app.get("/", async (req, res) => {
   const sql = await database.selectPeople();
   const html = parser.peopleToHtml(sql);
 
-  const response = "<h1>Full Cycle Rocks!</h1> " + html;
+  const response = "<h1>Full Cycle Rocks!</h1>\n" + html;
 
   res.send(response);
 });
