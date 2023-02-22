@@ -27,4 +27,4 @@ Or pull from DockerHub:
 `docker pull guisfits/fullcycle`
 
 And run it:  
-`docker run guisfits/fullcycle`
+`docker run --rm guisfits/fullcycle`

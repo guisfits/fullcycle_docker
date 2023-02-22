@@ -18,7 +18,7 @@ services:
     build: 
       context: ./node
       dockerfile: Dockerfile
-    image: guisfits/fullcycle-docker-node:prod
+    image: guisfits/fullcycle-docker-node
     container_name: app
     entrypoint: wait-for db:3306 -t 50 -- npm run start
     networks:
