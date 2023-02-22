@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+
+  nginx: 
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile.prod
+    image: guisfits/fullcycle-docker-nginx
+    container_name: nginx
+    networks:
+      - fullcycle-docker
+    ports:
+      - "8080:80"
+
+  app:
+    build: 
+      context: ./node
+      dockerfile: Dockerfile.prod
+    image: guisfits/fullcycle-docker-node:prod
+    container_name: app
+    networks:
+      - fullcycle-docker 
+    ports:
+      - "3000:3000"
+
+  # db:
+  #   image: mysql:5.7
+  #   command: --innodb-use-native-aio=0
+  #   container_name: db
+  #   restart: always
+  #   tty: true
+  #   volumes:
+  #     - ./mysql:/var/lib/mysql
+  #   environment:
+  #     - MYSQL_DATABASE=nodedb
+  #     - MYSQL_ROOT_PASSWORD=root
+  #   networks:
+  #     - fullcycle-docker
+
+networks:
+  fullcycle-docker:
+    driver: bridge 
