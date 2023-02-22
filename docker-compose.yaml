@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   nginx: 
     build: 
       context: ./nginx
@@ -12,31 +11,37 @@ services:
       - fullcycle-docker
     ports:
       - "8080:80"
+    depends_on:
+      - app
 
   app:
     build: 
       context: ./node
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     image: guisfits/fullcycle-docker-node:prod
     container_name: app
+    entrypoint: wait-for db:3306 -t 50 -- npm run start
     networks:
       - fullcycle-docker 
     ports:
       - "3000:3000"
+    depends_on:
+      - db
 
-  # db:
-  #   image: mysql:5.7
-  #   command: --innodb-use-native-aio=0
-  #   container_name: db
-  #   restart: always
-  #   tty: true
-  #   volumes:
-  #     - ./mysql:/var/lib/mysql
-  #   environment:
-  #     - MYSQL_DATABASE=nodedb
-  #     - MYSQL_ROOT_PASSWORD=root
-  #   networks:
-  #     - fullcycle-docker
+  db:
+    image: mysql:8.0.32
+    container_name: db
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    tty: true
+    volumes: 
+      - ./mysql_data:/var/lib/mysql
+      - ./mysql/schema.sql:/docker-entrypoint-initdb.d/1.sql
+    environment: 
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_PASSWORD=root
+    networks: 
+      - fullcycle-docker
 
 networks:
   fullcycle-docker:

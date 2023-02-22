@@ -1,11 +1,11 @@
 const express = require("express");
-const app = express()
+const app = express();
 const port = 3000;
 
-// const database = require("./database")
-// database.insert_name()
+const database = require("./database");
 
 app.get("/", (req, res) => {
+  database.insert_name();
   res.send("<h1>Hello World</h1>");
 });
 
